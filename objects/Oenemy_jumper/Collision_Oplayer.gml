@@ -1,0 +1,24 @@
+// Pokud HRÁČ je nezranitelný, ignoruj
+if (other.invincible_timer > 0) {
+    exit;
+}
+
+// Hráč vezme damage
+other.hp -= damage;
+
+// Knockback hráče
+var knockback_dir = point_direction(x, y, other.x, other.y);
+other.vel_x = lengthdir_x(other.knockback_force, knockback_dir);
+other.vel_y = lengthdir_y(other.knockback_force, knockback_dir) - 3;
+
+other.is_knockback = true;
+other.knockback_timer = 10;
+other.invincible_timer = other.invincible_duration;
+
+// Smrt hráče
+if (other.hp <= 0) {
+    other.hp = 0;
+    global.current_wave = 0;
+    global.player_money = 0;
+    game_restart();
+}
